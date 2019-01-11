@@ -1,4 +1,4 @@
-<html ng-app="app">
+<html ng-app="wimoApp">
 <head>
   <title>ngTodo</title>
 </head>
@@ -9,66 +9,74 @@
 <!-- Libraries -->
 <script src="angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.min.js"></script>
+<script src="table_comp.js"></script>
+<link rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<script
+	src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script
+	src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
-<!-- Template -->
-<script type="text/ng-template" id="/todos.html">
-  Search: <input type="text" ng-model="search.name">
-  <ul>
-    <li ng-repeat="todo in todos | filter: search">
-      <input type="checkbox" ng-model="todo.completed">
-      <a href="#/{{$index}}">{{todo.name}}</a>
-    </li>
-  </ul>
-</script>
+  <!-- components match only elements -->
+<div ng-controller="tableCtrl as ctrl">
 
-<script type="text/ng-template" id="/todoDetails.html">
-  <h1>{{ todo.name }}</h1>
-  completed: <input type="checkbox" ng-model="todo.completed">
-  note: <textarea>{{ todo.note }}</textarea>
-</script>
+  <div>
+    <p> Filters: </p> 
+  </div>
 
-<script>
-  angular.module('app', ['ngRoute'])
-    //---------------
-    // Services
-    //---------------
-    .factory('Todos', function(){
-      return [
-        { name: 'AngularJS Directives', completed: true, note: 'add notes...' },
-        { name: 'Data binding', completed: true, note: 'add notes...' },
-        { name: '$scope', completed: true, note: 'add notes...' },
-        { name: 'Controllers and Modules', completed: true, note: 'add notes...' },
-        { name: 'Templates and routes', completed: true, note: 'add notes...' },
-        { name: 'Filters and Services', completed: false, note: 'add notes...' },
-        { name: 'Get started with Node/ExpressJS', completed: false, note: 'add notes...' },
-        { name: 'Setup MongoDB database', completed: false, note: 'add notes...' },
-        { name: 'Be awesome!', completed: false, note: 'add notes...' },
-      ];
-    })
-    //---------------
-    // Controllers
-    //---------------
-    .controller('TodoController', ['$scope', 'Todos', function ($scope, Todos) {
-      $scope.todos = Todos;
-    }])
-    .controller('TodoDetailCtrl', ['$scope', '$routeParams', 'Todos', function ($scope, $routeParams, Todos) {
-      $scope.todo = Todos[$routeParams.id];
-    }])
-    //---------------
-    // Routes
-    //---------------
-    .config(['$routeProvider', function ($routeProvider) {
-      $routeProvider
-        .when('/', {
-          templateUrl: '/todos.html',
-          controller: 'TodoController'
-        })
-        .when('/:id', {
-          templateUrl: '/todoDetails.html',
-          controller: 'TodoDetailCtrl'
-       });
-    }]);
-</script>
+  <table class="table">
+    <tr>
+      <td>
+    <label> Driver Name select: </label><br>
+    <select name="singleSelect" ng-model="ctrl.tableFilter" ng-change="ctrl.getFilteredTableData('driver')">
+      <option ng-repeat="option in ctrl.drivers" value="{{option}}">{{option}}</option>
+    </select>
+    </td>
+     <td>
+    <label> Courrier select: </label><br>
+    <select name="singleSelect" ng-model="ctrl.tableFilter" ng-change="ctrl.getFilteredTableData('courier')">
+      <option ng-repeat="option in ctrl.courriers" value="{{option}}">{{option}}</option>
+    </select>
+    </td>
+     <td>
+    <label> Status select: </label><br>
+    <select name="singleSelect" ng-model="ctrl.tableFilter" ng-change="ctrl.getFilteredTableData('status')">
+      <option ng-repeat="option in ctrl.statuses" value="{{option}}">{{option}}</option>
+    </select>
+     </td>
+    </tr>
+  </table>
+
+  <table class="table">
+    <tr>
+    <th>Map</th>
+		<th>Courrier</th>
+		<th>Driver Name</th>
+		<th>Task status</th>
+		<th>Task Description</th>
+    <th>Task start date</th>
+    <th>Task end date</th>
+    <th>Driver comment</th>
+    <th>Action</th>
+	</tr>
+
+  <tr ng-repeat="x in ctrl.data">
+    <td>
+		<input type="button" value="Show Map" class="btn btn-warning" ng-click="ctrl.showMap(x.fromLocation, x.toLocation)" />
+		</td>
+    <td>{{ x.courier }}</td>
+    <td>{{ x.driverName }}</td>
+    <td>{{x.status}} <input type="text" value="{{x.status}}" ng-model="ctrl.status" ng-show="x.status ==='pending'"/></td>
+    <td>{{ x.description }}</td>
+    <td>{{ x.startedAt }}</td>
+    <td>{{ x.finishedAt }}</td>
+    <td ng-readonly = "x.status ==='failed' || x.status ==='completed' ">{{ x.driverComment }}</td>
+    <td>
+		<input type="button" value="Update" class="btn btn-primary" ng-click="ctrl.updateRow(x.id)" ng-show = "x.status ==='pending' "/>
+		</td>
+  </tr>
+</table>
+</div>
 
 </body>
 </html>

@@ -1,9 +1,12 @@
 const express = require("express");
 const mysql = require('mysql');
+const bodyParser =  require("body-parser");
 
 const app = express();
 //  Serve static files
-app.use(express.static('frontend'));
+app.use(express.static(__dirname + '/frontend'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 
 // create connection to database
@@ -11,8 +14,8 @@ app.use(express.static('frontend'));
 const db = mysql.createConnection ({
     host: 'localhost',
     user: 'root',
-    password: '',
-    database: 'socka'
+    password: '01117042116vero',
+    database: 'wimo'
 });
 
 // connect to database
@@ -24,25 +27,86 @@ db.connect((err) => {
 });
 
 app.get("/", (req, res) => {
-    res.sendfile('index.html');
+    res.sendFile('index.html');
 });
 
 app.get("/data", (req, res) => {
 
-    var data = [
-        { name: 'AngularJS Directives', completed: true, note: 'add notes...' },
-        { name: 'Data binding', completed: true, note: 'add notes...' },
-        { name: '$scope', completed: true, note: 'add notes...' },
-        { name: 'Controllers and Modules', completed: true, note: 'add notes...' },
-        { name: 'Templates and routes', completed: true, note: 'add notes...' },
-        { name: 'Filters and Services', completed: false, note: 'add notes...' },
-        { name: 'Get started with Node/ExpressJS', completed: false, note: 'add notes...' },
-        { name: 'Setup MongoDB database', completed: false, note: 'add notes...' },
-        { name: 'Be awesome!', completed: false, note: 'add notes...' },
-      ];
+    let query = "select * from tasks order by deliveryDate";
+    let list = {};
 
-      res.send(data);
+    db.query(query, (err, result)=>{
+        if(err){
+            console.log("error");
+        }else{
+            //console.log(result);
+            list = result;
+        }
+
+        res.send(list);
+    })
+
+      
 });
+
+app.post("/getFilteredData", (req, res) => {
+
+    var reqData = req.body;
+
+    // default filter
+    let query = "select * from tasks where courier = ? order by deliveryDate";
+
+    if(reqData.type == 'status'){
+
+        query = "select * from tasks where status = ? order by deliveryDate";
+
+    }else if(reqData.type == 'driver'){
+
+        query = "select * from tasks where driverName = ? order by deliveryDate";
+
+    }
+    
+    let list = {};
+    let params = [reqData.value];
+
+    db.query(query, params, (err, result)=>{
+
+        if(err){
+            console.log("error");
+        }else{
+            //console.log(result);
+            list = result;
+        }
+
+        res.send(list);
+    })
+   
+});
+
+app.post("/updateTask", (req, res) => {
+    
+    var reqData = req.body;
+
+    let query = "update tasks set status = ? where id = ?";
+    let responseData = "";
+    let params = [reqData.status, reqData.id];
+
+    db.query(query, params, (err, result)=>{
+        if(err){
+            console.log("error");
+        }else{
+            
+            responseData = "success";
+        }
+
+        res.send(responseData);
+    })
+});
+
+app.post("/showMap", (req, res) => {
+    res.sendFile(__dirname + "/frontend/test_maps.html");
+});
+
 
 app.listen(3000,  function() {
   console.log('listening on 3000')

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+
+  </head>
+   <!-- components match only elements -->
+
+    <body ng-app="maps" ng-controller="mapsCtrl as ctrl">
+      <!-- Libraries -->
+    <script src="angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.min.js"></script>
+    <script src="maps_comp.js"></script>
+    <script src="table_comp.js"></script>
+
+      <div id="map"></div>
+
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCOoJO3ZfzX9LYkmyryZndNnmyOJrVXQwg"
+      async defer></script> 
+    </body>
+
+</html>

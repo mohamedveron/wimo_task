@@ -30,6 +30,7 @@ app.get("/", (req, res) => {
     res.sendFile('index.html');
 });
 
+// get all tasks oredered by delivery date
 app.get("/data", (req, res) => {
 
     let query = "select * from tasks order by deliveryDate";
@@ -39,7 +40,7 @@ app.get("/data", (req, res) => {
         if(err){
             console.log("error");
         }else{
-            //console.log(result);
+
             list = result;
         }
 
@@ -74,7 +75,7 @@ app.post("/getFilteredData", (req, res) => {
         if(err){
             console.log("error");
         }else{
-            //console.log(result);
+            
             list = result;
         }
 

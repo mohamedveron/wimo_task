@@ -1,16 +1,16 @@
 (function(angular) {
   'use strict';
-angular.module('maps', ['wimoApp']).controller('mapsCtrl',['$http', 'detail', function MainCtrl($http, detail) {
+angular.module('maps', ['wimoApp']).controller('mapsCtrl',['$http', 'UserService', function MainCtrl($http, UserService) {
 
     var ctrl = this;
     var map;
-
+    
     var myLatLng = { lat: 25.194594, lng: 55.274034};
     var myLatLng1 = { lat: 25.089483, lng: 55.189321 }; 
 
-    if(detail.getdetails()){
-        var myLatLng = { lat: detail.getdetails().from.lat, lng: detail.getdetails().from.lng};
-        var myLatLng1 = { lat: detail.getdetails().from.lat, lng: detail.getdetails().from.lng }; 
+    if(UserService.getJson()){
+        myLatLng = { lat:UserService.getJson().from.lat, lng: UserService.getJson().from.lng};
+        myLatLng1 = { lat: UserService.getJson().from.lat, lng: UserService.getJson().from.lng }; 
     }
     
     
@@ -24,12 +24,12 @@ angular.module('maps', ['wimoApp']).controller('mapsCtrl',['$http', 'detail', fu
     
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 25.194594, lng: 55.274034},
+        center: myLatLng,
         zoom: 12
         });
 
         map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 25.089483, lng: 55.189321},
+        center: myLatLng1,
         zoom: 11
         });
 

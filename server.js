@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 const db = mysql.createConnection ({
     host: 'localhost',
     user: 'root',
-    password: '01117042116vero',
+    password: 'ZXCVB',
     database: 'wimo'
 });
 
@@ -86,7 +86,6 @@ app.post("/getFilteredData", (req, res) => {
 app.post("/updateTask", (req, res) => {
     
     var reqData = req.body;
-
     let query = "update tasks set status = ? where id = ?";
     let responseData = "";
     let params = [reqData.status, reqData.id];
@@ -111,3 +110,5 @@ app.post("/showMap", (req, res) => {
 app.listen(3000,  function() {
   console.log('listening on 3000')
 });
+
+module.exports = app;

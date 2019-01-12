@@ -1,10 +1,9 @@
 (function(angular) {
   'use strict';
 var app = angular.module('wimoApp', []);
-app.controller('tableCtrl', function MainCtrl($http, $window, detail) {
+app.controller('tableCtrl', function MainCtrl($http, $window, UserService) {
 
   var ctrl = this;
-
   ctrl.data = {};
   ctrl.courriers = [];
   ctrl.drivers = [];
@@ -93,23 +92,25 @@ app.controller('tableCtrl', function MainCtrl($http, $window, detail) {
   ctrl.showMap = (fromLoc, toLoc) => {
 
     var filters = {"from" : fromLoc, "to": toLoc};
-    detail.setdetails(filters); 
+    
     $window.location.href = '/test_maps.html';
-     
+    UserService.setJson(filters); 
 
   }
 
 });
-    app.service('detail', function() {
 
-      this.v = {};
-      return {
-        setdetails: function(value) {
-          this.v = value;
-        },
-        getdetails: function(){
-          return this.v;
-        }
-      };
-    });
+  app.factory('UserService', function(){
+    var myjsonObj = null;//the object to hold our data
+     return {
+     getJson:function(){
+       return myjsonObj;
+     },
+     setJson:function(value){
+       
+      myjsonObj = value;
+     }
+    }
+  });
+
 })(window.angular);

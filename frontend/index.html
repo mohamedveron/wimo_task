@@ -60,7 +60,7 @@
     <th>Action</th>
 	</tr>
 
-  <tr ng-repeat="x in ctrl.data">
+  <tr ng-repeat="x in ctrl.data" | orderBy:'status'>
     <td>
 		<input type="button" value="Show Map" class="btn btn-warning" ng-click="ctrl.showMap(x.fromLocation, x.toLocation)" />
 		</td>

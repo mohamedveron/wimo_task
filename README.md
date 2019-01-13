@@ -1,7 +1,7 @@
 # wimo_task
 Node js app to view list of delivery tasks and show path of each task by google maps.
 
-# Notes and assumtions
+# Notes and assumptions
 1- Headers with buttons (courier, status, startedAt) used to sort by this column.			
 
 2- Tasks sorted by delivery date by default.

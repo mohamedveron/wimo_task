@@ -10,4 +10,4 @@ Node js app to view list of delivery tasks and show path of each task by google 
 
 4- click buttton show map to see the route in full map view.
 
-5- travis failed because i use local database 
+5- travis ci build failed because using local database ->  https://github.com/mohamedveron/wimo_task/blob/dev/travis.png

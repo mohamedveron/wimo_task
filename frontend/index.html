@@ -50,30 +50,30 @@
   <table class="table">
     <tr>
     <th>Map</th>
-		<th>Courrier</th>
+		<th><button ng-click="ctrl.sortBy('courier')">Courrier</button></th>
 		<th>Driver Name</th>
-		<th>Task status</th>
+		<th><button ng-click="ctrl.sortBy('status')">Status</button></th>
 		<th>Task Description</th>
-    <th>Task start date</th>
+    <th><button ng-click="ctrl.sortBy('startedAt')">Start date</button></th>
     <th>Task end date</th>
     <th>Driver comment</th>
-    <th>Action</th>
 	</tr>
 
-  <tr ng-repeat="x in ctrl.data" | orderBy:'status'>
+  <tr ng-repeat="x in ctrl.data |  orderBy:ctrl.propertyName:reverse">
     <td>
-		<input type="button" value="Show Map" class="btn btn-warning" ng-click="ctrl.showMap(x.fromLocation, x.toLocation)" />
+		<input type="button" value="Show Map" class="btn btn-primary" ng-click="ctrl.showMap(x.fromLocation, x.toLocation)" />
 		</td>
     <td>{{ x.courier }}</td>
     <td>{{ x.driverName }}</td>
-    <td>{{x.status}} <input type="text" value="{{x.status}}" ng-model="ctrl.status" ng-show="x.status ==='pending'"/></td>
+    <td>{{x.status}}
+      <select name="singleSelect" ng-model="ctrl.status" ng-change="ctrl.updateRow(x.id)" ng-show="x.status ==='pending'">
+          <option ng-repeat="option in ctrl.statusOptions" value="{{option}}">{{option}}</option>
+      </select>
+      </td>
     <td>{{ x.description }}</td>
     <td>{{ x.startedAt }}</td>
     <td>{{ x.finishedAt }}</td>
     <td ng-readonly = "x.status ==='failed' || x.status ==='completed' ">{{ x.driverComment }}</td>
-    <td>
-		<input type="button" value="Update" class="btn btn-primary" ng-click="ctrl.updateRow(x.id)" ng-show = "x.status ==='pending' "/>
-		</td>
   </tr>
 </table>
 </div>

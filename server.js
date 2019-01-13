@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 const db = mysql.createConnection ({
     host: 'localhost',
     user: 'root',
-    password: 'ZXCVB',
+    password: '01117042116vero',
     database: 'wimo'
 });
 
@@ -75,7 +75,7 @@ app.post("/getFilteredData", (req, res) => {
         if(err){
             console.log("error");
         }else{
-            
+
             list = result;
         }
 

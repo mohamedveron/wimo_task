@@ -11,6 +11,8 @@ app.controller('tableCtrl', function MainCtrl($http, $window, UserService) {
 
   ctrl.status = "";
   ctrl.tableFilter = "";
+  ctrl.propertyName = "driverDate";
+  ctrl.statusOptions = ["completed", "failed"];
 
   // get intial table data
   getTableData();
@@ -89,6 +91,7 @@ app.controller('tableCtrl', function MainCtrl($http, $window, UserService) {
       });
   } 
 
+  // show map of target delivery
   ctrl.showMap = (fromLoc, toLoc) => {
 
     var filters = {"from" : fromLoc, "to": toLoc};
@@ -96,7 +99,11 @@ app.controller('tableCtrl', function MainCtrl($http, $window, UserService) {
     $window.location.href = '/test_maps.html';
     UserService.setJson(filters); 
 
-  }
+  };
+
+  ctrl.sortBy = (type) => {
+    ctrl.propertyName = type;
+  };
 
 });
 
